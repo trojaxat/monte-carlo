@@ -1,6 +1,5 @@
 import pandas as pd
-from import_csv_to_database import csv_to_database
-from import_csv_to_database import getConnectionString
+from import_csv_to_database import csv_to_database, getConnectionString
 import time
 
 time.sleep(5)
