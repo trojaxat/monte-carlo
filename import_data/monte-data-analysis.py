@@ -4,14 +4,14 @@ import seaborn as sns
 import warnings
 warnings.filterwarnings('ignore')
 
-df = pd.read_csv('data/monday.csv', parse_dates=True,
+df = pd.read_csv('import_data/data/monday.csv', parse_dates=True,
                  delimiter=';', index_col='timestamp')
 
 all_data = []
 all_days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
 for days in all_days:
     all_data.append(pd.read_csv(
-        f'data/{days}.csv',                    parse_dates=True, delimiter=';'))
+        f'import_data/data/{days}.csv',                    parse_dates=True, delimiter=';'))
 
 big_df = pd.concat(all_data, axis=0)
 big_df['timestamp'] = pd.to_datetime(big_df['timestamp'])
