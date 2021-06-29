@@ -17,10 +17,15 @@ def createMcCsv(path, endpath):
                         'before', 'after'], dtype=None, copy=False)
 
     for customer_number in df['customer_no'].unique():
+        entrance = True
         for index, location in enumerate(df.loc[df['customer_no'] == customer_number]['location'].iloc):
+            before = df.loc[df['customer_no'] ==
+                            customer_number]['location'].iloc[index]
+            if entrance is True:
+                dfmc = dfmc.append(
+                    {"before": 'entrance', "after": before}, ignore_index=True)
+                entrance = False
             try:
-                before = df.loc[df['customer_no'] ==
-                                customer_number]['location'].iloc[index]
                 after = df.loc[df['customer_no'] ==
                                customer_number]['location'].iloc[index+1]
                 dfmc = dfmc.append(
@@ -30,17 +35,45 @@ def createMcCsv(path, endpath):
     dfmc.to_csv(endpath)
 
 
-df = pd.read_csv(endpath, delimiter=',')
-print(pd.crosstab(df['before'], df['after'], normalize=0))
-#                   checkout  dairy     drinks    fruit     spices
-dairyMc = np.array([0.347924, 0.000000, 0.244669, 0.202020, 0.205387])
-drinksMc = np.array([0.534504,  0.028858, 0.000000, 0.233375, 0.203262])
-fruitMc = np.array([0.523477, 0.224775, 0.129870, 0.000000, 0.121878])
-spicesMc = np.array([0.236631, 0.314171, 0.290107, 0.159091, 0.000000])
+# createMcCsv(path, endpath)
 
-correlation = round(df.corr(), 2)
-sns.heatmap(dairyMc.transpose(), annot=True)
-plt.show()
+df = pd.read_csv(endpath, delimiter=',')
+cross = pd.crosstab(df['before'], df['after'], normalize=0)
+print(cross)
+
+# # shows where people go from one location
+# cross.plot.bar(stacked=False)
+# plt.show()
+
+# #                   checkout  dairy     drinks    fruit     spices
+# dairyMc = np.array([0.347924, 0.000000, 0.244669, 0.202020, 0.205387])
+# drinksMc = np.array([0.534504,  0.028858, 0.000000, 0.233375, 0.203262])
+# fruitMc = np.array([0.523477, 0.224775, 0.129870, 0.000000, 0.121878])
+# spicesMc = np.array([0.236631, 0.314171, 0.290107, 0.159091, 0.000000])
+
+# # shows heat map of probability
+# sns.heatmap(cross, annot=True)
+# plt.show()
+
+
+def randomNextStepGenerator(location):
+    S = ['checkout', 'dairy', "drinks", "fruit", "spices"]  # possible states
+    index = S.index(location)
+    current_state = [0, 0, 0, 0, 0]
+    current_state[index] = 1
+
+    dot_product = np.dot(current_state, cross)
+    # given the current probability distribution, a next step
+    chance = np.random.choice(S, p=cross.loc['dairy'])
+    # What is the probability for the conditions in two steps
+    step2 = np.dot(np.dot(current_state, cross), cross)
+    print("dot_product", dot_product)
+    print("chance", chance)
+    print("step2", step2)
+    return chance
+
+
+print(randomNextStepGenerator('dairy'))
 
 
 def getInitialState():
