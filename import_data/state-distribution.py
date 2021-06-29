@@ -32,7 +32,7 @@ def createMcCsv(path, endpath):
 
 df = pd.read_csv(endpath, delimiter=',')
 print(pd.crosstab(df['before'], df['after'], normalize=0))
-# checkout     dairy    drinks     fruit    spices
+#                   checkout  dairy     drinks    fruit     spices
 dairyMc = np.array([0.347924, 0.000000, 0.244669, 0.202020, 0.205387])
 drinksMc = np.array([0.534504,  0.028858, 0.000000, 0.233375, 0.203262])
 fruitMc = np.array([0.523477, 0.224775, 0.129870, 0.000000, 0.121878])
