@@ -25,13 +25,16 @@ def createMcCsv(path, endpath):
                 dfmc = dfmc.append(
                     {"before": 'entrance', "after": before}, ignore_index=True)
                 entrance = False
+
+            # if index+1 in df.loc[df['customer_no'] == customer_number]['location'].index
             try:
                 after = df.loc[df['customer_no'] ==
                                customer_number]['location'].iloc[index+1]
                 dfmc = dfmc.append(
                     {"before": before, "after": after}, ignore_index=True)
             except Exception:
-                print("Python is a trash language")
+                print("Python sucks")
+
     dfmc.to_csv(endpath)
 
 

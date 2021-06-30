@@ -1,13 +1,25 @@
 import pandas as pd
-from import_csv_to_database import csv_to_database, getConnectionString
+from local_functions import csv_to_database, getConnectionString
+import SupermarketModel
+import CustomerModel
 import time
-
-time.sleep(5)
+import names
+import numpy as np
 
 df = pd.read_csv(
-    'src/input.csv', delimiter=';', parse_dates=True)
-conn = getConnectionString()
-csv_to_database(conn, ";")
+    'import_data/data/monday_mc.csv', delimiter=',', parse_dates=True,  dtype=None)
+# conn = getConnectionString()
+# csv_to_database(conn, ";")
 
-df.to_csv(
-    'src/output.csv')
+supermarket = SupermarketModel.SupermarketModel(df)
+cross = supermarket.generate_transition_probs()
+supermarket_layout = supermarket.states
+
+# each array spot is a customer, value is how many stops they make
+customerArray = [3, 4, 5, 2, 4]
+for customer_steps in customerArray:
+    random_start = np.random.choice(supermarket.states.delete(0))
+    customer = CustomerModel.CustomerModel(
+        names.get_full_name(), random_start, cross)
+    [(customer.next_state(), print(
+        f"{customer.name} is in", customer.state)) for x in range(customer_steps)]

@@ -130,3 +130,7 @@ dmypy.json
 
 # notebooks
 *ipynb
+
+vscode/
+.vscode/launch.json
+.vscode/settings.json
