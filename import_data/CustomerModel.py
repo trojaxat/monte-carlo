@@ -21,12 +21,11 @@ class CustomerModel:
         if self.state == 'checkout':
             new_state = 'end'
         else:
+            # if the probability does not add up to 1, it is then realigned on itself
             probability = self.transition_probs.T[self.state].array
             probability /= probability.sum()
             new_state = np.random.choice(
                 self.transition_probs.T.index, 1, p=probability, replace=False)[0]
-        if new_state == self.state:
-            tesdt = 1
         self.state = new_state
 
     def is_active(self):
