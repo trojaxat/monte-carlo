@@ -15,16 +15,16 @@ class Customer:
             return 'False'
          else:
             return 'True'
-        
-    def __repr__(self):                                     #convert an object to a string and create a summary of the object
-        return f'<Customer {self.name} in {self.state}>'
-
-
+  
     def next_state(self):
         self.state= np.random.choice(['spices', 'dairy', 'drinks', 'fruit', 'checkout'], p=self.transition_probs.loc[self.state])
                              # add a method that changes the state attribute of the customer.
                               ## Propagates the customer to the next state.
                                ###Returns nothing.   
+      
+    def __repr__(self):                                     #convert an object to a string and create a summary of the object
+        return f'<Customer {self.name} in {self.state}>'
+
 
 df = pd.read_csv(
     'import_data/data/monday_mc.csv', delimiter=',', parse_dates=True,  dtype=None)
