@@ -1,13 +1,19 @@
 import numpy as np
 
 
-class CustomerModel:
+class Customer:
     """ Customer that moves through a in a MCMC simulation"""
 
-    def __init__(self, name, state, transition_probs, budget=100):
+    def __init__(
+            self,
+            name,
+            transition_probs,
+            state="entrance",
+            budget=100
+    ):
         self.name = name
-        self.state = "entrance"
         self.transition_probs = transition_probs
+        self.state = state
         self.budget = budget
 
     def __repr__(self):

@@ -1,8 +1,12 @@
+""" Supermarket
+This script contains the class supermarket and functions for 
+generating shopping behaviour.
+"""
 import numpy as np
 import pandas as pd
 
 
-class SupermarketModel:
+class Supermarket:
     """ Supermarket that provides the possible states in a MCMC simulation"""
 
     def __init__(self, daily_info, states=[]):
@@ -19,9 +23,5 @@ class SupermarketModel:
             print("Key error")
         return False
 
-    def randomNextStepGenerator(self, location):
-        index = self.state.index(location)
-        current_state = [0, 0, 0, 0, 0]
-        current_state[index] = 1
-        chance = np.random.choice(current_state, p=self.cross.loc['dairy'])
-        return chance
+    def random_first_state(self):
+        return np.random.choice(self.states.delete(0))
