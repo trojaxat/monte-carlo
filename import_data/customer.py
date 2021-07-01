@@ -1,4 +1,3 @@
-from import_data.tiles_skeleton import SupermarketMap
 import numpy as np
 
 TILE_SIZE = 32
@@ -13,8 +12,8 @@ class Customer:
             transition_probs,
             avatar,
             supermarketmap,
-            x,
-            y,
+            x=12,
+            y=12,
             state="entrance",
     ):
         self.name = name
@@ -30,8 +29,8 @@ class Customer:
 
     def draw(self, frame):
         x = self.col * TILE_SIZE
-        y = ___ * ___
-        frame[y:___, x:___] = self.avatar
+        y = self.col * self.row
+        frame[y:12, x:12] = self.avatar
 
     def next_state(self):
         ''' Propagates the customer to the next state '''
@@ -47,6 +46,17 @@ class Customer:
             new_state = np.random.choice(
                 self.transition_probs.T.index, 1, p=probability, replace=False)[0]
         self.state = new_state
+
+    def move(self, direction):
+        new_row = self.row
+        new_col = self.col
+
+        if direction == 'up':
+            new_row -= 1
+
+        if self.supermarket.contents[new_row][new_col] == '.':
+            self.col = new_col
+            self.row = new_row
 
     def is_active(self):
         if self.state == 'end':

@@ -1,5 +1,9 @@
 import numpy as np
 import cv2
+import pandas as pd
+import names
+from supermarket import Supermarket
+from customer import Customer
 
 
 TILE_SIZE = 32
@@ -78,6 +82,28 @@ class SupermarketMap:
 
 
 if __name__ == "__main__":
+    df = pd.read_csv(
+        'import_data/data/monday_mc.csv', delimiter=',', parse_dates=True,  dtype=None)
+    supermarket = Supermarket(df)
+    cross = supermarket.generate_transition_probs()
+
+    # each array spot is a customer, value is how many stops they make
+    customerArray = [3, 4, 5, 2, 4]
+    tiles = cv2.imread("import_data/media/tiles.png")
+
+    # fix this!
+    avatar = cv2.imread("import_data/media/sprite.jpeg")
+    avatar = tiles[0*32+32, 4*32+32]
+    market = SupermarketMap(MARKET, tiles)
+
+    customers = []
+    for customer_steps in customerArray:
+        random_start = supermarket.random_first_state()
+        new_customer = Customer(
+            names.get_full_name(), cross, avatar, market, random_start)
+        customers.append(new_customer)
+    [(new_customer.next_state(), print(
+        f"{new_customer.name} is in", new_customer.state)) for x in range(customer_steps)]
 
     background = np.zeros((500, 700, 3), np.uint8)
     tiles = cv2.imread("import_data/media/tiles.png")
@@ -87,7 +113,7 @@ if __name__ == "__main__":
     while True:
         frame = background.copy()
         market.draw(frame)
-
+        new_customer.draw(frame)
         # https://www.ascii-code.com/
         key = cv2.waitKey(1)
 

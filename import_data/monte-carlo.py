@@ -9,6 +9,7 @@ from supermarket import Supermarket
 from customer import Customer
 from dataPreparation import DataPreparation
 from visualize import Visualize_Simulation
+from import_data.tiles_skeleton import SupermarketMap, MARKET
 
 # conn = getConnectionString()
 # csv_to_database(conn, ",")
@@ -26,11 +27,14 @@ cross = supermarket.generate_transition_probs()
 
 # each array spot is a customer, value is how many stops they make
 customerArray = [3, 4, 5, 2, 4]
+tiles = cv2.imread("import_data/media/tiles.png")
+avatar = cv2.imread("import_data/media/sprite.jpeg")
+market = SupermarketMap(MARKET, tiles)
 
 for customer_steps in customerArray:
     random_start = supermarket.random_first_state()
     customer = Customer(
-        names.get_full_name(), random_start, cross)
+        names.get_full_name(), cross, avatar, market, random_start)
     [(customer.next_state(), print(
         f"{customer.name} is in", customer.state)) for x in range(customer_steps)]
 
