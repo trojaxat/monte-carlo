@@ -1,4 +1,7 @@
+from import_data.tiles_skeleton import SupermarketMap
 import numpy as np
+
+TILE_SIZE = 32
 
 
 class Customer:
@@ -8,16 +11,27 @@ class Customer:
             self,
             name,
             transition_probs,
+            avatar,
+            supermarketmap,
+            x,
+            y,
             state="entrance",
-            budget=100
     ):
         self.name = name
         self.transition_probs = transition_probs
         self.state = state
-        self.budget = budget
+        self.supermarket = supermarketmap
+        self.avatar = avatar
+        self.row = x
+        self.col = y
 
     def __repr__(self):
         return f'<Customer {self.name} in {self.state}>'
+
+    def draw(self, frame):
+        x = self.col * TILE_SIZE
+        y = ___ * ___
+        frame[y:___, x:___] = self.avatar
 
     def next_state(self):
         ''' Propagates the customer to the next state '''
