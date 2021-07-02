@@ -167,13 +167,9 @@ c3.state
 
 c3.is_active()
 
-get_ipython().system('pip install Faker')
-
 from faker import Faker
 
-
 fake = Faker()
-
 
 fake.name()
 
